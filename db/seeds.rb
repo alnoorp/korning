@@ -16,3 +16,11 @@ CSV.foreach(datafile, headers: true) do |row|
     puts "Sale with invoice no. #{sale.invoice_no} processed"
   end
 end
+
+CSV.foreach(datafile, headers: true) do |row|
+    employee_data = row.to_hash['employee'].gsub('(',' ').gsub(')','').split(' ')
+    Employee.find_or_create_by(last_name: employee_data[1]) do |employee|
+        employee.first_name = employee_data[0]
+        employee.email = employee_data[2]
+    end
+end
