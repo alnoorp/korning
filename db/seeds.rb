@@ -27,14 +27,14 @@ end
 
 CSV.foreach(datafile, headers: true) do |row|
     customer_data = row.to_hash['customer_and_account_no'].gsub('(',' ').gsub(')','').split(' ')
-    Customer.find_or_create_by(name: customer_data[1]) do |customer|
-        customer.name = customer_data[0]
-        customer.account_number = customer_data[1]
-        customer.website = 'http://motorola.com' if customer.name == 'Motorola'
-        customer.website = 'http://lg.com' if customer.name == 'LG'
-        customer.website = 'http://htc.com' if customer.name == 'HTC'
-        customer.website = 'http://nokia.com' if customer.name == 'Nokia'
-        customer.website = 'http://apple.com' if customer.name == 'Apple'
-        customer.website = 'http://samsung.com' if customer.name == 'Samsung'
+    Customer.find_or_create_by(name: customer_data[0]) do |customer|
+        customer.name = customer_data.first
+        customer.account_number = customer_data.last
+        customer.website = 'motorola.com' if customer.name == 'Motorola'
+        customer.website = 'lg.com' if customer.name == 'LG'
+        customer.website = 'htc.com' if customer.name == 'HTC'
+        customer.website = 'nokia.com' if customer.name == 'Nokia'
+        customer.website = 'apple.com' if customer.name == 'Apple'
+        customer.website = 'samsung.com' if customer.name == 'Samsung'
     end
 end
