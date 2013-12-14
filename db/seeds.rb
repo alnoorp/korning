@@ -38,3 +38,9 @@ CSV.foreach(datafile, headers: true) do |row|
         customer.website = 'samsung.com' if customer.name == 'Samsung'
     end
 end
+
+CSV.foreach(datafile, headers: true) do |row|
+    Product.find_or_create_by(name: row['product_name']) do |product|
+        product.name = row['product_name']
+    end
+end
