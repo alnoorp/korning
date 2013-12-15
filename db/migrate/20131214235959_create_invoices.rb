@@ -1,7 +1,7 @@
 class CreateInvoices < ActiveRecord::Migration
   def up
     create_table :invoices do |t|
-      t.string :number
+      t.string :number, null: false
 
       t.timestamps
     end

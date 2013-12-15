@@ -50,3 +50,9 @@ CSV.foreach(datafile, headers: true) do |row|
         invoice.number = row['invoice_no']
     end
 end
+
+CSV.foreach(datafile, headers: true) do |row|
+    Frequency.find_or_create_by(name: row['invoice_frequency']) do |frequency|
+        frequency.name = row['invoice_frequency']
+    end
+end
