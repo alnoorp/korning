@@ -15,7 +15,7 @@
     <tr>
       <td><%= customer.name %></td>
       <td><%= customer.account_number %></td>
-      <td><a href="http://<%= customer.website %>"><%= customer.website %></a></td>
+      <td><%= link_to customer.website, "http://#{customer.website}" %></td>
     </tr>
     <% end %>
   </tbody>

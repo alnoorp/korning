@@ -15,4 +15,8 @@ class Transaction < ActiveRecord::Base
   def quarter
     return if date = Date.new(2012, 11, 13)
   end
+
+  def group_monthly
+    self.select("date as date, sum(amount) as total_amount").group(date.month)
+  end
 end

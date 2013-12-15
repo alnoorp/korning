@@ -73,13 +73,18 @@ CSV.foreach(datafile, headers: true) do |row|
     end
 end
 
-transactions = Transaction.all
-
-transactions.each do |transaction|
+Transaction.all.each do |transaction|
     SaleInvoice.find_or_create_by(id: transaction.id) do |sale_invoice|
         sale_invoice.sale_id = transaction.id
         sale_invoice.invoice_id = transaction.invoice_id
     end
+end
+
+Frequency.all.each do |item|
+    item.period = 1 if item.name == 'Once'
+    item.period = 4 if item.name == 'Quarterly'
+    item.period = 12 if item.name == 'Monthly'
+    item.save
 end
 
 

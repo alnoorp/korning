@@ -4,4 +4,5 @@ class Employee < ActiveRecord::Base
   def transactions_by_amount
     transactions.order("amount DESC")
   end
+
 end
