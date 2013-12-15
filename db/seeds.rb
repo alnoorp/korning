@@ -20,14 +20,14 @@ end
 CSV.foreach(datafile, headers: true) do |row|
     employee_data = row.to_hash['employee'].gsub('(',' ').gsub(')','').split(' ')
     Employee.find_or_create_by(last_name: employee_data[1]) do |employee|
-        employee.first_name = employee_data[0]
-        employee.email = employee_data[2]
+        employee.first_name = employee_data.first
+        employee.email = employee_data.last
     end
 end
 
 CSV.foreach(datafile, headers: true) do |row|
     customer_data = row.to_hash['customer_and_account_no'].gsub('(',' ').gsub(')','').split(' ')
-    Customer.find_or_create_by(name: customer_data[0]) do |customer|
+    Customer.find_or_create_by(name: customer_data.first) do |customer|
         customer.name = customer_data.first
         customer.account_number = customer_data.last
         customer.website = 'motorola.com' if customer.name == 'Motorola'
@@ -56,3 +56,42 @@ CSV.foreach(datafile, headers: true) do |row|
         frequency.name = row['invoice_frequency']
     end
 end
+
+CSV.foreach(datafile, headers: true) do |row|
+    customer_data = row.to_hash['customer_and_account_no'].gsub('(',' ').gsub(')','').split(' ')
+    employee_data = row.to_hash['employee'].gsub('(',' ').gsub(')','').split(' ')
+    Transaction.find_or_create_by(id: row['id']) do |transaction|
+        transaction.id = row['id']
+        transaction.date = Chronic.parse(row['sale_date'])
+        transaction.amount = row['sale_amount'].gsub('$','')
+        transaction.quantity = row['units_sold']
+        transaction.product_id = Product.where(name: row['product_name']).first.id
+        transaction.customer_id = Customer.where(account_number: customer_data.last).first.id
+        transaction.employee_id = Employee.where(last_name: employee_data[1]).first.id
+        transaction.invoice_id = Invoice.where(number: row['invoice_no']).first.id
+        transaction.frequency_id = Frequency.where(name: row['invoice_frequency']).first.id
+    end
+end
+
+transactions = Transaction.all
+
+transactions.each do |transaction|
+    SaleInvoice.find_or_create_by(id: transaction.id) do |sale_invoice|
+        sale_invoice.sale_id = transaction.id
+        sale_invoice.invoice_id = transaction.invoice_id
+    end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
