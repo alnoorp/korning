@@ -46,14 +46,21 @@ CSV.foreach(datafile, headers: true) do |row|
 end
 
 CSV.foreach(datafile, headers: true) do |row|
-    Invoice.find_or_create_by(number: row['invoice_no']) do |invoice|
-        invoice.number = row['invoice_no']
+    Frequency.find_or_create_by(name: row['invoice_frequency']) do |frequency|
+        frequency.name = row['invoice_frequency']
     end
 end
 
+Frequency.all.each do |item|
+    item.period = 1 if item.name == 'Once'
+    item.period = 4 if item.name == 'Quarterly'
+    item.period = 12 if item.name == 'Monthly'
+    item.save
+end
+
 CSV.foreach(datafile, headers: true) do |row|
-    Frequency.find_or_create_by(name: row['invoice_frequency']) do |frequency|
-        frequency.name = row['invoice_frequency']
+    Invoice.find_or_create_by(number: row['invoice_no']) do |invoice|
+        invoice.number = row['invoice_no']
     end
 end
 
@@ -80,12 +87,7 @@ Transaction.all.each do |transaction|
     end
 end
 
-Frequency.all.each do |item|
-    item.period = 1 if item.name == 'Once'
-    item.period = 4 if item.name == 'Quarterly'
-    item.period = 12 if item.name == 'Monthly'
-    item.save
-end
+
 
 
 

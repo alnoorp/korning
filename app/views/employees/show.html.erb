@@ -4,11 +4,29 @@
 <br />
 <a href="mailto:<%= @employees.email %>"><%= @employees.email %></a>
 <br />
-<br />
-<% @employees.transactions.each do |sale| %>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<%= javascript_tag do %>
+  google.load('visualization', '1.0', {'packages':['corechart']});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+    var options = {
+      title:'Monthly Sales',
+      hAxis: { title: 'Sales' }
+    };
 
+    var data = new google.visualization.arrayToDataTable([
+      ['Month', 'Sales'],
+      <% @employees.transactions_by_month.each do |month| %>
+      <%=raw "['#{Date::ABBR_MONTHNAMES[month.first.to_i]}', #{month.last}]," %>
+      <% end %>
+    ]);
+
+    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
 <% end %>
-<br />
+<!--Div that will hold the pie chart-->
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
 <table border='1'>
   <thead>
     <tr>
