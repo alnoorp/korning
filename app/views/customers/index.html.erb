@@ -1,0 +1,22 @@
+<h1>Customers</h1>
+
+<table border='1'>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Account Number</th>
+      <th>Website</th>
+      <th>Invoice Frequency</th>
+    </tr>
+  </thead>
+
+  <% @customers.each do |customer| %>
+  <tbody>
+    <tr>
+      <td><%= customer.name %></td>
+      <td><%= customer.account_number %></td>
+      <td><a href="http://<%= customer.website %>"><%= customer.website %></a></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

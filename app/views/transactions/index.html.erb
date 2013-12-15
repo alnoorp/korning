@@ -1,0 +1,25 @@
+<h1>Sales</h1>
+
+<table border='1'>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Invoice Number</th>
+      <th>Units Sold</th>
+      <th>Price/Unit</th>
+    </tr>
+  </thead>
+
+  <% @transactions.each do |sale| %>
+  <tbody>
+    <tr>
+      <td><%= sale.date %></td>
+      <td><%= "$#{sale.amount}" %></td>
+      <td><%= Invoice.where(id: sale.invoice_id).first.number %></td>
+      <td><%= sale.quantity %></td>
+      <td><%= "$#{sale.unit_price}" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

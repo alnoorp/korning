@@ -1,0 +1,19 @@
+<h1>Products</h1>
+
+<table border='1'>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+
+  <% @products.each do |product| %>
+  <tbody>
+    <tr>
+      <td><%= product.id %></td>
+      <td><%= product.name %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

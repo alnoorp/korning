@@ -1,0 +1,24 @@
+<h1>Employee Profile</h1>
+<%= @employees.first_name %>
+<%= @employees.last_name %>
+<br />
+<a href="mailto:<%= @employees.email %>"><%= @employees.email %></a>
+<br />
+<br />
+<table border='1'>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @employees.transactions_by_amount.each do |sale| %>
+    <tr>
+      <td><%= sale.date %></td>
+      <td><%= "$#{sale.amount}" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
