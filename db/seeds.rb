@@ -44,3 +44,9 @@ CSV.foreach(datafile, headers: true) do |row|
         product.name = row['product_name']
     end
 end
+
+CSV.foreach(datafile, headers: true) do |row|
+    Invoice.find_or_create_by(number: row['invoice_no']) do |invoice|
+        invoice.number = row['invoice_no']
+    end
+end
